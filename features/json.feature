@@ -160,3 +160,8 @@ Feature: Testing JSONContext
         Given I am on "/json/imajson.json"
         And the JSON node "object[0]" should be valid according to the schema "fixtures/www/jsonschema/object.schema.json"
         And the JSON node "object[1]" should not be valid according to the schema "fixtures/www/jsonschema/object.schema.json"
+
+    Scenario: Check json value with double quote
+        Given I am on "/json/withdoublequote.json"
+        Then the response should be in JSON
+        And the JSON node "foo" should be equal to "A "bar" in a bar"
