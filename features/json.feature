@@ -148,3 +148,8 @@ Feature: Testing JSONContext
         Then the response should be in JSON
         And the JSON node "root[0].name" should exist
         And the JSON node "root" should have 2 elements
+
+    Scenario: Json Schema validation
+        Given I am on "/json/imajson.json"
+        And the JSON node "object[0]" should be valid according to the schema "fixtures/www/jsonschema/object.schema.json"
+        And the JSON node "object[1]" should not be valid according to the schema "fixtures/www/jsonschema/object.schema.json"
