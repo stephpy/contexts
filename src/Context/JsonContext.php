@@ -256,6 +256,34 @@ class JsonContext extends BaseContext
     }
 
     /**
+     * @Then /^the JSON should be invalid according to the schema "(?P<filename>[^"]*)"$/
+     */
+    public function theJsonShouldBeInvalidAccordingToTheSchema($filename)
+    {
+        if (false === is_file($filename)) {
+            throw new \RuntimeException(
+                'The JSON schema doesn\'t exist'
+            );
+        }
+
+        try {
+            $isValid = $this->getInspector()->validate(
+                $this->getJson(),
+                new JsonSchema(
+                    file_get_contents($filename),
+                    'file://' . getcwd() . '/' . $filename
+                )
+            );
+        } catch (\Exception $e) {
+            $isValid = false;
+        }
+
+        if (true === $isValid) {
+            throw new ExpectationException('Expected to receive invalid json, got valid one', $this->getSession());
+        }
+    }
+
+    /**
      * @Then /^print last JSON response$/
      */
     public function printLastJsonResponse()
